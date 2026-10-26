@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /panel/
+Disallow: /qr/
+
+Sitemap: https://sandalbalikevi.org/sitemap.xml

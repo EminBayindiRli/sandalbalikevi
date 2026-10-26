@@ -1,0 +1,192 @@
+{
+ "categories": [
+  {
+   "id": "c1",
+   "name_tr": "Soğuk mezeler",
+   "name_en": "Cold meze",
+   "sort": 1,
+   "visible": true
+  },
+  {
+   "id": "c2",
+   "name_tr": "Ara sıcaklar",
+   "name_en": "Hot starters",
+   "sort": 2,
+   "visible": true
+  },
+  {
+   "id": "c3",
+   "name_tr": "Balıklar",
+   "name_en": "Fish",
+   "sort": 3,
+   "visible": true
+  },
+  {
+   "id": "c4",
+   "name_tr": "İçecekler",
+   "name_en": "Drinks",
+   "sort": 4,
+   "visible": true
+  }
+ ],
+ "items": [
+  {
+   "id": "i1",
+   "category_id": "c1",
+   "name_tr": "Naturel Patlıcan",
+   "name_en": "Smoked Aubergine",
+   "desc_tr": "Odun ateşinde közlenip elde ayıklanan patlıcan; sızma zeytinyağı ve bir tutam deniz tuzuyla, olduğu gibi.",
+   "desc_en": "Aubergine roasted over wood fire and peeled by hand; simply dressed with extra virgin olive oil and sea salt.",
+   "ingredients_tr": "Közlenmiş patlıcan, sızma zeytinyağı, sarımsak, deniz tuzu, karabiber",
+   "ingredients_en": "Fire-roasted aubergine, extra virgin olive oil, garlic, sea salt, black pepper",
+   "grams": 150,
+   "kcal": 160,
+   "price": null,
+   "price_unit_tr": null,
+   "price_unit_en": null,
+   "allergens": [],
+   "available": true,
+   "featured": true,
+   "photo_url": "/assets/patlican.webp",
+   "callouts": [
+    {
+     "a": [
+      40,
+      30
+     ],
+     "tr": "közlenmiş patlıcan",
+     "en": "fire-roasted aubergine"
+    },
+    {
+     "a": [
+      86,
+      59
+     ],
+     "tr": "odun ateşi izi",
+     "en": "wood-fire char"
+    },
+    {
+     "a": [
+      52,
+      52
+     ],
+     "tr": "taze karabiber",
+     "en": "fresh black pepper"
+    },
+    {
+     "a": [
+      62,
+      64
+     ],
+     "tr": "sızma zeytinyağı",
+     "en": "extra virgin olive oil"
+    }
+   ],
+   "theme": "aub",
+   "sort": 1
+  },
+  {
+   "id": "i2",
+   "category_id": "c1",
+   "name_tr": "Fava",
+   "name_en": "Fava",
+   "desc_tr": "Kuru bakladan, ağır ateşte saatlerce pişirilip ezilen ipeksi bir Ege klasiği.",
+   "desc_en": "An Aegean classic: dried broad beans slow-cooked for hours and whipped until silky.",
+   "ingredients_tr": "Kuru bakla, sızma zeytinyağı, kuru soğan, dereotu, limon",
+   "ingredients_en": "Dried broad beans, extra virgin olive oil, onion, dill, lemon",
+   "grams": 150,
+   "kcal": 210,
+   "price": null,
+   "price_unit_tr": null,
+   "price_unit_en": null,
+   "allergens": [],
+   "available": true,
+   "featured": true,
+   "photo_url": "/assets/fava.webp",
+   "callouts": [
+    {
+     "a": [
+      35,
+      42
+     ],
+     "tr": "kuru bakla püresi",
+     "en": "broad bean purée"
+    },
+    {
+     "a": [
+      74,
+      38
+     ],
+     "tr": "sızma zeytinyağı",
+     "en": "extra virgin olive oil"
+    },
+    {
+     "a": [
+      55,
+      50
+     ],
+     "tr": "her gün taze yapılır",
+     "en": "made fresh every day"
+    }
+   ],
+   "theme": "saf",
+   "sort": 2
+  },
+  {
+   "id": "i3",
+   "category_id": "c1",
+   "name_tr": "Kuru Börülce",
+   "name_en": "Black-eyed Peas",
+   "desc_tr": "Haşlanmış börülce; mor soğan, taze dereotu ve yeşil biberle, bol zeytinyağı ve limonla.",
+   "desc_en": "Tender black-eyed peas with red onion, fresh dill and green pepper, finished with olive oil and lemon.",
+   "ingredients_tr": "Kuru börülce, mor soğan, dereotu, yeşil biber, sızma zeytinyağı, limon",
+   "ingredients_en": "Black-eyed peas, red onion, dill, green pepper, extra virgin olive oil, lemon",
+   "grams": 180,
+   "kcal": 190,
+   "price": null,
+   "price_unit_tr": null,
+   "price_unit_en": null,
+   "allergens": [],
+   "available": true,
+   "featured": true,
+   "photo_url": "/assets/borulce.webp",
+   "callouts": [
+    {
+     "a": [
+      49,
+      8
+     ],
+     "tr": "mor soğan",
+     "en": "red onion"
+    },
+    {
+     "a": [
+      88,
+      52
+     ],
+     "tr": "taze dereotu",
+     "en": "fresh dill"
+    },
+    {
+     "a": [
+      62,
+      42
+     ],
+     "tr": "kuru börülce",
+     "en": "black-eyed peas"
+    },
+    {
+     "a": [
+      74,
+      64
+     ],
+     "tr": "yeşil biber",
+     "en": "green pepper"
+    }
+   ],
+   "theme": "sea",
+   "sort": 3
+  }
+ ],
+ "settings": {}
+}

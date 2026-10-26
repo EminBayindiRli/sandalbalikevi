@@ -1,0 +1,7 @@
+/panel/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/qr/*
+  X-Robots-Tag: noindex
+/data/*
+  Cache-Control: no-cache
