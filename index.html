@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://sandalbalikevi.org/">
-<meta name="description" content="Sandal Balık Evi · Güzelbahçe, İzmir. Günlük taze balık, 20'den fazla ev yapımı meze, ikinci limanda deniz kenarında akşam yemeği.">
 <title>Sandal Balık Evi · Güzelbahçe</title>
 <meta name="description" content="2010'dan beri Güzelbahçe ikinci limanda: günün balığı, Ege mezeleri ve gün batımı. WhatsApp'tan rezervasyon yapın.">
 <meta name="theme-color" content="#0D2240">
@@ -232,7 +231,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 <main id="top">
   <section class="hero">
-    <div class="hero-img" id="heroImg" style="background-image:url('https://www.sandalbalikevi.com/img/gal/gal2.jpg')"></div>
+    <div class="hero-img" id="heroImg" style="background-image:url('/assets/site/gal2.webp')"></div>
     <div class="wrap">
       <h1>Sandal<br>Balık Evi<em data-tr="Güzelbahçe, ikinci liman" data-en="Güzelbahçe, the second harbour"></em></h1>
       <div class="hero-meta">
@@ -245,7 +244,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <section class="band" id="hikaye">
     <div class="wrap story">
       <figure class="rv">
-        <img src="https://www.sandalbalikevi.com/img/gal/gal1.jpg" alt="Sandal Balık Evi'nde deniz kenarında masalar" loading="lazy">
+        <img src="/assets/site/gal1.webp" alt="Sandal Balık Evi'nde deniz kenarında masalar" loading="lazy">
         <figcaption data-tr="İkinci liman, Güzelbahçe" data-en="Second harbour, Güzelbahçe"></figcaption>
       </figure>
       <div class="rv">
@@ -320,7 +319,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </section>
 
   <section class="quote">
-    <div class="bg" style="background-image:url('https://www.sandalbalikevi.com/img/gal/gal5.jpg')"></div>
+    <div class="bg" style="background-image:url('/assets/site/gal5.webp')"></div>
     <blockquote class="rv" data-tr="Güneş denize inerken, rakı yavaşça bulanır." data-en="As the sun sinks into the sea, the rakı slowly clouds."></blockquote>
   </section>
 
@@ -358,6 +357,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.8-.1 1.4Z"/></svg>
 </a>
 
+<script src="/js/config.js"></script>
+<script src="/js/data.js"></script>
+<script>
+/* Panelden değiştirilen iletişim bilgilerini sayfadaki bağlantılara uygula */
+window.SANDAL.load().then(({settings:S})=>{
+  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a=>{a.href=window.SANDAL.waLink(S.whatsapp,new URL(a.href).searchParams.get("text")||"")});
+  if(S.phone) document.querySelectorAll('a[href^="tel:"]').forEach(a=>{a.href="tel:"+String(S.phone).replace(/[^+0-9]/g,"")});
+  if(/^https:\/\//i.test(S.instagram||"")) document.querySelectorAll('a[href*="instagram.com"]').forEach(a=>{a.href=S.instagram});
+}).catch(()=>{});
+</script>
 <script>
 (()=>{
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -532,7 +541,7 @@ const strip=document.getElementById("strip");
 function buildMezes(){
   strip.innerHTML="";
   MEZE.forEach(([img,tr,en])=>{const f=document.createElement("figure");f.className="card";
-    f.innerHTML=`<img loading="lazy" src="https://www.sandalbalikevi.com/img/k_resim/${img}.jpg" alt="${lang==="tr"?tr:en}"><figcaption>${lang==="tr"?tr:en}</figcaption>`;strip.appendChild(f)});
+    f.innerHTML=`<img loading="lazy" src="/assets/site/${img}.webp" alt="${lang==="tr"?tr:en}"><figcaption>${lang==="tr"?tr:en}</figcaption>`;strip.appendChild(f)});
 }
 const step=()=>Math.min(strip.clientWidth*.8,700);
 prev.onclick=()=>strip.scrollBy({left:-step(),behavior:"smooth"});

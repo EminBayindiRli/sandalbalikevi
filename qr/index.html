@@ -5,137 +5,162 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Sandal Balık Evi</title>
-<meta name="theme-color" content="#F7F0E4">
+<meta name="theme-color" content="#0B2135">
 <link rel="icon" href="/assets/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..800;1,9..144,500..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#F7F0E4;--ink:#102A4C;--ink2:#3C5372;--coral:#E85A3C;--saffron:#F2B035;--aub:#5A2448;--sea:#2F5E4E;
---serif:"Fraunces",Georgia,serif;--sans:"Bricolage Grotesque",system-ui,sans-serif;--hand:"Caveat",cursive;--ease:cubic-bezier(.2,.7,.1,1)}
+:root{--deep:#0B2135;--deep2:#0F2C45;--tide:#163C5A;--sea:#1F5F66;--foam:#EAF2EF;--mist:rgba(234,242,239,.68);--line:rgba(234,242,239,.14);
+--brass:#D6A548;--brass2:#F0C877;--coral:#E2674A;
+--serif:"Fraunces",Georgia,serif;--sans:"Bricolage Grotesque",system-ui,sans-serif;--ease:cubic-bezier(.2,.7,.1,1)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-html{background:var(--paper)}
-body{min-height:100svh;color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;
-  background:radial-gradient(700px 500px at 100% 0%,rgba(242,176,53,.22),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(232,90,60,.12),transparent 60%),var(--paper)}
-body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .3 0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+html{background:var(--deep)}
+body{min-height:100svh;color:var(--foam);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:radial-gradient(520px 420px at 50% -80px,rgba(214,165,72,.20),transparent 70%),linear-gradient(180deg,var(--deep2) 0%,var(--deep) 46%,#081827 100%)}
 a{color:inherit;text-decoration:none}
-:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:14px}
+:focus-visible{outline:2px solid var(--brass2);outline-offset:3px;border-radius:14px}
+[hidden]{display:none!important}
 
-.awning{height:30px;background:repeating-linear-gradient(90deg,var(--ink) 0 26px,#FBF6EE 26px 52px);position:relative}
-.awning::after{content:"";position:absolute;left:0;right:0;top:100%;height:14px;background:radial-gradient(circle at 13px 0,var(--ink) 12.5px,transparent 13.5px) 0 0/52px 14px repeat-x,radial-gradient(circle at 39px 0,#FBF6EE 12.5px,transparent 13.5px) 0 0/52px 14px repeat-x;filter:drop-shadow(0 3px 2px rgba(16,42,76,.18))}
+/* deniz yüzeyi: arka planda yavaş akan ince dalgalar */
+.sea{position:fixed;left:0;right:0;bottom:0;height:46svh;pointer-events:none;z-index:0;opacity:.5}
+.sea svg{position:absolute;left:0;width:200%;height:60px}
+.sea path{fill:none;stroke:rgba(234,242,239,.07);stroke-width:1.5}
+.sea svg:nth-child(1){bottom:30%;animation:drift 26s linear infinite}
+.sea svg:nth-child(2){bottom:16%;animation:drift 34s linear infinite reverse}
+.sea svg:nth-child(3){bottom:3%;animation:drift 42s linear infinite}
+@keyframes drift{to{transform:translateX(-50%)}}
 
-.wrap{position:relative;width:min(480px,100%);margin:0 auto;padding:18px 16px calc(30px + env(safe-area-inset-bottom))}
-.lang{position:absolute;top:22px;right:16px;display:flex;background:#fff;border:1.5px solid var(--ink);border-radius:999px;padding:3px;font:800 12px var(--sans);box-shadow:3px 3px 0 var(--ink);z-index:3}
-.lang button{background:none;border:0;color:var(--ink);font:inherit;padding:5px 11px;border-radius:999px;cursor:pointer}
-.lang button[aria-pressed=true]{background:var(--ink);color:#fff}
+.wrap{position:relative;z-index:1;width:min(480px,100%);margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom))}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:36px}
+.table{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;border:1px solid rgba(214,165,72,.55);color:var(--brass2);font-size:13px;font-weight:700;letter-spacing:.02em}
+.table svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8}
+.lang{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:999px;padding:3px;font:700 12px var(--sans);background:rgba(255,255,255,.04)}
+.lang button{background:none;border:0;color:var(--mist);font:inherit;padding:5px 12px;border-radius:999px;cursor:pointer;letter-spacing:.04em}
+.lang button[aria-pressed=true]{background:var(--foam);color:var(--deep)}
 
-.head{text-align:center;padding-top:26px}
-.logo{position:relative;width:150px;height:150px;margin:0 auto}
-.logo svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 26s linear infinite}
-.logo text{font:800 10px var(--sans);fill:var(--ink);text-transform:uppercase}
-.logo img{position:absolute;inset:26px;width:98px;height:98px;border-radius:50%;box-shadow:0 0 0 4px var(--paper),0 0 0 6px var(--ink),0 14px 30px -10px rgba(16,42,76,.5)}
+/* lombar (porthole) logo */
+.head{text-align:center;padding-top:10px}
+.logo{position:relative;width:158px;height:158px;margin:0 auto}
+.logo::before{content:"";position:absolute;inset:14px;border-radius:50%;background:conic-gradient(from 30deg,#8C6A2C,var(--brass2),#9C7633,var(--brass),#7D5E26,var(--brass2),#8C6A2C);box-shadow:0 16px 40px -12px rgba(0,0,0,.7),inset 0 0 0 1px rgba(0,0,0,.25)}
+.logo svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 40s linear infinite}
+.logo text{font:700 9.5px var(--sans);fill:var(--mist);letter-spacing:.06em;text-transform:uppercase}
+.logo img{position:absolute;inset:25px;width:108px;height:108px;border-radius:50%;box-shadow:0 0 0 3px #1B3550,inset 0 0 0 2px #000}
+.logo .rivet{position:absolute;width:6px;height:6px;margin:-3px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FBE3A6,#8C6A2C);z-index:1}
 @keyframes spin{to{transform:rotate(360deg)}}
-h1{font:italic 800 clamp(48px,14vw,62px)/.95 var(--serif);letter-spacing:-.02em;margin:18px 0 0}
-.sub{font:600 26px var(--hand);color:var(--coral);margin-top:6px}
-.table{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 16px;border-radius:999px;background:var(--saffron);border:1.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-size:14px;font-weight:800;transform:rotate(-2deg)}
-.table[hidden]{display:none}
+.kicker{margin:16px 0 0;font:700 12px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--brass)}
+h1{font:600 clamp(40px,12vw,52px)/1 var(--serif);letter-spacing:-.015em;margin:8px 0 0}
+.sub{margin:8px 0 0;font:italic 500 18px var(--serif);color:var(--mist)}
+.rope{display:block;width:150px;height:12px;margin:18px auto 0;color:var(--brass);opacity:.8}
 
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
-.tile{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;min-height:150px;padding:16px;border-radius:24px;color:#FFF6EA;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);transition:transform .2s var(--ease),box-shadow .2s var(--ease);opacity:0;animation:in .6s var(--ease) forwards}
-.tile:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
-@media(hover:hover){.tile:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}}
-.tile b{display:block;font:italic 800 21px/1.05 var(--serif);letter-spacing:-.01em}
-.tile small{display:block;font-size:13px;line-height:1.35;margin-top:6px;opacity:.88}
-.tile .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.16)}
-.tile .ic svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.tile.wide{grid-column:1/-1}
+.notice{display:flex;gap:12px;align-items:flex-start;margin:22px 0 0;padding:14px 16px;border-radius:16px;background:rgba(214,165,72,.10);border:1px solid rgba(214,165,72,.45);text-align:left;font-size:15px;line-height:1.45}
+.notice svg{flex:none;width:22px;height:22px;margin-top:1px;stroke:var(--brass2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.notice b{display:block;font:700 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--brass2);margin-bottom:2px}
 
-.menu{background:var(--coral);min-height:200px;padding:22px}
-.menu b{font-size:52px}
-.menu small{font-size:15px;max-width:15ch}
-.menu img{position:absolute;right:-70px;top:50%;width:270px;transform:translateY(-50%) rotate(-14deg);filter:drop-shadow(0 18px 16px rgba(0,0,0,.35));animation:float 5s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(-50%) rotate(-14deg)}50%{transform:translateY(-56%) rotate(-11deg)}}
-.menu .go{display:inline-flex;align-items:center;gap:8px;margin-top:14px;align-self:flex-start;padding:9px 16px;border-radius:999px;background:var(--ink);font-weight:800;font-size:14px}
-.menu .go svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.6}
-.menu .hand{position:absolute;right:16px;top:14px;font:700 24px var(--hand);color:var(--ink);transform:rotate(6deg)}
+/* menü kartı */
+.menu{position:relative;display:block;overflow:hidden;margin-top:22px;padding:22px 20px 20px;min-height:206px;border-radius:24px;
+  background:radial-gradient(260px 200px at 100% 30%,rgba(240,200,119,.22),transparent 70%),linear-gradient(150deg,var(--sea) 0%,var(--tide) 62%,var(--deep2) 100%);
+  border:1px solid rgba(234,242,239,.16);box-shadow:0 22px 40px -22px rgba(0,0,0,.8);opacity:0;animation:in .6s var(--ease) .05s forwards}
+.menu .hand{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--brass);color:var(--deep);font:800 11px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.menu b{display:block;margin-top:12px;font:600 50px/1 var(--serif);letter-spacing:-.02em}
+.menu small{display:block;margin-top:6px;max-width:16ch;font-size:15px;color:var(--mist)}
+.menu img{position:absolute;right:-64px;top:54%;width:250px;transform:translateY(-50%) rotate(-12deg);filter:drop-shadow(0 22px 18px rgba(0,0,0,.5));animation:float 6s ease-in-out infinite}
+.menu .go{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:11px 18px;border-radius:999px;background:var(--foam);color:var(--deep);font-weight:800;font-size:15px}
+.menu .go svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4}
+.menu .wv{position:absolute;left:0;right:0;bottom:0;height:34px;color:rgba(234,242,239,.10)}
+@keyframes float{0%,100%{transform:translateY(-50%) rotate(-12deg)}50%{transform:translateY(-55%) rotate(-9deg)}}
+@media(hover:hover){.menu:hover .go{background:var(--brass2)}}
 
-.cal{background:var(--ink)}
-.cal .ic{background:var(--saffron);color:var(--ink)}
-.res{background:var(--sea)}
-.res .ic{background:#25D366;color:#fff}
-.rev{background:var(--saffron);color:var(--ink)}
-.rev .ic{background:var(--ink);color:var(--saffron)}
-.rev .stars{position:absolute;right:12px;top:16px;font-size:15px;letter-spacing:1px;color:var(--ink)}
-.ig{background:var(--aub)}
-.ig .ic{background:linear-gradient(45deg,#F2B035,#E85A3C,#B23A86);color:#fff}
-.about{flex-direction:row;align-items:center;gap:14px;min-height:0;background:#FBF6EE;color:var(--ink)}
-.about .ic{background:var(--ink);color:#fff;flex:none}
-.about .arr{margin-left:auto;width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:2.4;flex:none}
-.waves{position:absolute;left:0;right:0;bottom:-6px;height:40px;opacity:.25;pointer-events:none}
-.waves path{fill:none;stroke:currentColor;stroke-width:2;animation:drift 7s linear infinite}
-@keyframes drift{to{transform:translateX(-60px)}}
-@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* bağlantı listesi */
+.list{margin-top:14px;border-radius:22px;background:rgba(255,255,255,.035);border:1px solid var(--line);overflow:hidden}
+.tile{display:flex;align-items:center;gap:14px;padding:15px 16px;border-top:1px solid var(--line);opacity:0;animation:in .55s var(--ease) forwards;transition:background .2s}
+.tile:first-child{border-top:0}
+.tile:active{background:rgba(255,255,255,.06)}
+@media(hover:hover){.tile:hover{background:rgba(255,255,255,.05)}}
+.tile .ic{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(214,165,72,.55);color:var(--brass2);background:rgba(214,165,72,.08)}
+.tile .ic svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tile b{display:block;font:600 19px/1.15 var(--serif)}
+.tile small{display:block;font-size:13px;color:var(--mist);margin-top:2px}
+.tile .arr{margin-left:auto;flex:none;width:18px;height:18px;stroke:var(--mist);fill:none;stroke-width:2}
+.tile.res .ic{border-color:rgba(37,211,102,.6);color:#5BE08F;background:rgba(37,211,102,.08)}
+.stars{color:var(--brass2);letter-spacing:1px;font-size:12px}
 
-.notice{margin:20px 0 0;padding:12px 16px;border-radius:16px;background:var(--saffron);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-weight:700;text-align:center}
-.notice b{font:700 22px/1 var(--hand);color:var(--coral);margin-right:6px}
-.notice[hidden]{display:none}
-.foot{margin-top:26px;text-align:center;color:var(--ink2);font-size:13px;line-height:1.7}
-.foot a{font-weight:700;text-decoration:underline;text-underline-offset:3px}
-.foot .sig{display:block;font:600 22px var(--hand);color:var(--ink);margin-bottom:4px}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-@media (prefers-reduced-motion:reduce){.tile{animation:none;opacity:1}.logo svg,.menu img,.waves path{animation:none}}
+.foot{margin-top:28px;text-align:center;color:var(--mist);font-size:13px;line-height:1.75}
+.foot a{color:var(--foam);font-weight:700;text-decoration:underline;text-decoration-color:rgba(214,165,72,.6);text-underline-offset:4px}
+.foot .sig{display:block;font:italic 500 21px var(--serif);color:var(--brass2);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){.menu,.tile{animation:none;opacity:1}.logo svg,.menu img,.sea svg{animation:none}}
 </style>
 </head>
 <body>
-<div class="awning" aria-hidden="true"></div>
+<div class="sea" aria-hidden="true">
+  <svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 30 Q50 10 100 30 T200 30 T300 30 T400 30 T500 30 T600 30 T700 30 T800 30 T900 30 T1000 30 T1100 30 T1200 30"/></svg>
+  <svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 30 Q75 8 150 30 T300 30 T450 30 T600 30 T750 30 T900 30 T1050 30 T1200 30"/></svg>
+  <svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 30 Q60 14 120 30 T240 30 T360 30 T480 30 T600 30 T720 30 T840 30 T960 30 T1080 30 T1200 30"/></svg>
+</div>
 
 <main class="wrap">
-  <div class="lang" role="group" aria-label="Dil / Language">
-    <button type="button" data-lang="tr" aria-pressed="true">TR</button>
-    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  <div class="topbar">
+    <span class="table" id="table" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M5 9a7 7 0 0 0 14 0M8 6h8"/><circle cx="12" cy="3.5" r="1.5"/></svg><span id="tableTxt"></span></span>
+    <div class="lang" role="group" aria-label="Dil / Language">
+      <button type="button" data-lang="tr" aria-pressed="true">TR</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
   </div>
 
   <header class="head">
-    <div class="logo">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="c" d="M50 50m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0"/></defs><text><textPath href="#c" textLength="274" lengthAdjust="spacing">Sandal Balık Evi · Güzelbahçe · İzmir · </textPath></text></svg>
+    <div class="logo" id="logo">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="c" d="M50 50m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text><textPath href="#c" textLength="286" lengthAdjust="spacing">Sandal Balık Evi · Güzelbahçe · İzmir · 2010 · </textPath></text></svg>
       <img src="/assets/logo.jpg" alt="Sandal Balık Evi">
     </div>
+    <p class="kicker">Sandal Balık Evi</p>
     <h1 data-t="hello"></h1>
     <p class="sub" data-t="sub"></p>
-    <span class="table" id="table" hidden><span id="tableTxt"></span></span>
+    <svg class="rope" viewBox="0 0 150 12" aria-hidden="true"><path d="M0 6 Q9 0 18 6 T36 6 T54 6 T72 6 T90 6 T108 6 T126 6 T144 6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="75" cy="6" r="2.4" fill="currentColor"/></svg>
   </header>
-  <p class="notice" id="notice" hidden><b>duyuru</b> <span id="noticeTxt"></span></p>
 
-  <nav class="grid" aria-label="Bağlantılar">
-    <a class="tile wide menu" href="/menu/" id="menuLink" style="animation-delay:.05s">
-      <img src="/assets/borulce.webp" alt="">
-      <span class="hand" data-t="menuHand"></span>
-      <span><b data-t="menu"></b><small data-t="menuS"></small></span>
-      <span class="go"><span data-t="open"></span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-    <a class="tile cal" href="/#baliklar" style="animation-delay:.12s">
-      <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12c3-4 7-6 11-6 3 0 5 2 7 6-2 4-4 6-7 6-4 0-8-2-11-6Z"/><path d="M3 12 1 9M3 12l-2 3"/><circle cx="16" cy="10.5" r=".8"/></svg></span>
-      <span><b data-t="catch"></b><small data-t="catchS"></small></span>
-    </a>
-    <a class="tile res" id="res" target="_blank" rel="noopener" style="animation-delay:.18s">
+  <p class="notice" id="notice" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M5 12H3a9 9 0 0 0 18 0h-2M8 10h8"/></svg>
+    <span><b>duyuru</b><span id="noticeTxt"></span></span>
+  </p>
+
+  <a class="menu" href="/menu/" id="menuLink">
+    <img src="/assets/borulce.webp" alt="">
+    <span class="hand" data-t="menuHand"></span>
+    <b data-t="menu"></b>
+    <small data-t="menuS"></small>
+    <span class="go"><span data-t="open"></span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <svg class="wv" viewBox="0 0 480 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0 18 Q20 6 40 18 T80 18 T120 18 T160 18 T200 18 T240 18 T280 18 T320 18 T360 18 T400 18 T440 18 T480 18 V34 H0Z" fill="currentColor"/></svg>
+  </a>
+
+  <nav class="list" aria-label="Bağlantılar">
+    <a class="tile res" id="res" target="_blank" rel="noopener" style="animation-delay:.12s">
       <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2Z"/></svg></span>
       <span><b data-t="res"></b><small data-t="resS"></small></span>
+      <svg class="arr" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+    <a class="tile cal" href="/#baliklar" style="animation-delay:.18s">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12c3-4 7-6 11-6 3 0 5 2 7 6-2 4-4 6-7 6-4 0-8-2-11-6Z"/><path d="M3 12 1 9M3 12l-2 3"/><circle cx="16" cy="10.5" r=".8"/></svg></span>
+      <span><b data-t="catch"></b><small data-t="catchS"></small></span>
+      <svg class="arr" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
     </a>
     <a class="tile rev" id="review" target="_blank" rel="noopener" style="animation-delay:.24s">
-      <span class="stars" aria-hidden="true">★★★★★</span>
       <span class="ic"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/></svg></span>
-      <span><b data-t="review"></b><small data-t="reviewS"></small></span>
+      <span><b data-t="review"></b><small><span class="stars" aria-hidden="true">★★★★★</span> <span data-t="reviewS"></span></small></span>
+      <svg class="arr" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
     </a>
     <a class="tile ig" id="ig" href="https://www.instagram.com/sandalbalikevi/" target="_blank" rel="noopener" style="animation-delay:.3s">
       <span class="ic"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8"/></svg></span>
       <span><b>Instagram</b><small>@sandalbalikevi</small></span>
+      <svg class="arr" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
     </a>
-    <a class="tile wide about" href="/" style="animation-delay:.36s">
+    <a class="tile about" href="/" style="animation-delay:.36s">
       <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 14 7 7h10l2 7M12 3v4"/></svg></span>
       <span><b data-t="about"></b><small data-t="aboutS"></small></span>
-      <svg class="arr" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      <svg class="waves" viewBox="0 0 480 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 T150 20 T180 20 T210 20 T240 20 T270 20 T300 20 T330 20 T360 20 T390 20 T420 20 T450 20 T480 20 T510 20 T540 20"/></svg>
+      <svg class="arr" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
     </a>
   </nav>
 
@@ -151,19 +176,23 @@ h1{font:italic 800 clamp(48px,14vw,62px)/.95 var(--serif);letter-spacing:-.02em;
 <script>
 (()=>{
 const T={
- tr:{hello:"Hoş geldiniz",sub:"denizden sofranıza",menu:"Menü",menuS:"Mezeler, balıklar, içecekler",menuHand:"buradan başlayın!",open:"Menüyü aç",catch:"Balık takvimi",catchS:"Hangi balık ne zaman?",res:"Rezervasyon",resS:"WhatsApp'tan masa ayırtın",review:"Yorum yapın",reviewS:"Google'da bizi değerlendirin",about:"Sandal'ı tanıyın",aboutS:"Hikâyemiz, mezelerimiz, galeri",sig:"afiyet olsun!",addr:"Mithatpaşa Cd. No:182, Güzelbahçe / İzmir",dir:"Yol tarifi",table:n=>`Masa ${n}`,wa:"Merhaba, rezervasyon yapmak istiyorum."},
- en:{hello:"Welcome",sub:"from the sea to your table",menu:"Menu",menuS:"Meze, fish, drinks",menuHand:"start here!",open:"Open the menu",catch:"Fish calendar",catchS:"Which fish, when?",res:"Book a table",resS:"Reserve on WhatsApp",review:"Review us",reviewS:"Rate us on Google",about:"About Sandal",aboutS:"Our story, meze and gallery",sig:"enjoy your meal!",addr:"Mithatpaşa Cd. No:182, Güzelbahçe / İzmir",dir:"Directions",table:n=>`Table ${n}`,wa:"Hello, I'd like to make a reservation."}
+ tr:{hello:"Hoş geldiniz",sub:"denizden sofranıza",menu:"Menü",menuS:"Mezeler, balıklar, içecekler",menuHand:"buradan başlayın",open:"Menüyü aç",catch:"Balık takvimi",catchS:"Hangi balık ne zaman?",res:"Rezervasyon",resS:"WhatsApp'tan masa ayırtın",review:"Yorum yapın",reviewS:"Google'da bizi değerlendirin",about:"Sandal'ı tanıyın",aboutS:"Hikâyemiz, mezelerimiz, galeri",sig:"afiyet olsun",addr:"Mithatpaşa Cd. No:182, Güzelbahçe / İzmir",dir:"Yol tarifi",table:n=>`Masa ${n}`,wa:"Merhaba, rezervasyon yapmak istiyorum."},
+ en:{hello:"Welcome",sub:"from the sea to your table",menu:"Menu",menuS:"Meze, fish, drinks",menuHand:"start here",open:"Open the menu",catch:"Fish calendar",catchS:"Which fish, when?",res:"Book a table",resS:"Reserve on WhatsApp",review:"Review us",reviewS:"Rate us on Google",about:"About Sandal",aboutS:"Our story, meze and gallery",sig:"enjoy your meal",addr:"Mithatpaşa Cd. No:182, Güzelbahçe / İzmir",dir:"Directions",table:n=>`Table ${n}`,wa:"Hello, I'd like to make a reservation."}
 };
 const masa=(new URLSearchParams(location.search).get("masa")||"").replace(/[^0-9A-Za-z]/g,"").slice(0,4);
 let lang="tr", S=Object.assign({},window.SANDAL.DEFAULTS);
 const $=id=>document.getElementById(id);
+const https=(u,fb)=>/^https:\/\//i.test(u||"")?u:fb;
+/* lombar perçinleri */
+for(let i=0;i<8;i++){const a=(i*45+22.5)*Math.PI/180,r=document.createElement("i");r.className="rivet";
+  r.style.left=`${79+Math.cos(a)*60}px`;r.style.top=`${79+Math.sin(a)*60}px`;$("logo").appendChild(r)}
 function apply(){
   document.documentElement.lang=lang;
   document.querySelectorAll("[data-t]").forEach(el=>el.textContent=T[lang][el.dataset.t]);
   document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===lang));
   $("table").hidden=!masa; if(masa) $("tableTxt").textContent=T[lang].table(masa);
   $("res").href=window.SANDAL.waLink(S.whatsapp,T[lang].wa);
-  $("review").href=S.review_url; $("ig").href=S.instagram;
+  $("review").href=https(S.review_url,window.SANDAL.DEFAULTS.review_url); $("ig").href=https(S.instagram,window.SANDAL.DEFAULTS.instagram);
   $("tel").href="tel:"+String(S.phone).replace(/[^+0-9]/g,"");
   const nt=lang==="en"&&S.notice_en?S.notice_en:S.notice_tr; $("notice").hidden=!nt; $("noticeTxt").textContent=nt||"";
   try{localStorage.setItem("sandal-lang",lang)}catch(e){}

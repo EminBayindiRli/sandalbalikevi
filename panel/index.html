@@ -257,7 +257,8 @@ legend{font-weight:900;font-size:15px;margin-bottom:6px}
       <label class="f"><span>İçindekiler (İngilizce, virgülle)</span><input type="text" name="ingredients_en"></label>
 
       <fieldset><legend>Alerjenler</legend>
-        <p class="muted" style="margin:0 0 8px">Hiçbiri seçilmezse menüde “Alerjen içermez” yazar.</p>
+        <p class="muted" style="margin:0 0 8px">“Kontrol edildi” kapalıyken menüde alerjen bilgisi gösterilmez. Açık ve hiçbir alerjen seçili değilse menüde “Alerjen içermez” yazar.</p>
+        <p style="margin:0 0 10px"><label class="sw"><input type="checkbox" name="alok"><i></i>Alerjen bilgisi kontrol edildi</label></p>
         <div class="chk" id="alChk"></div>
       </fieldset>
 
@@ -316,6 +317,7 @@ const $=id=>document.getElementById(id);
 const {ALLERGENS,THEMES}=window.SANDAL;
 const C=window.SANDAL.cfg();
 let sb=null, CATS=[], ITEMS=[], SET={}, curCat=null, editing=null, coDraft=[], photoFile=null, photoUrl=null;
+const cssUrl=u=>String(u||"").replace(/["'()\\\s]/g,c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0"));
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 function toast(msg,err){const t=$("toast");t.textContent=msg;t.className="toast on"+(err?" err":"");clearTimeout(t._h);t._h=setTimeout(()=>t.className="toast",err?4200:1800)}
@@ -374,7 +376,7 @@ function renderItems(){
   if(!list.length){$("items").innerHTML=`<p class="empty">Bu kategoride ürün yok. Sağ alttaki “Yeni ürün” ile ekleyin.</p>`;return}
   $("items").innerHTML=list.map((i,k)=>`
     <div class="it${i.available?"":" off"}" data-id="${i.id}">
-      <span class="th" style="${i.photo_url?`background-image:url('${esc(i.photo_url)}')`:""}">${i.photo_url?"":"🍽"}</span>
+      <span class="th" style="${i.photo_url?`background-image:url('${cssUrl(i.photo_url)}')`:""}">${i.photo_url?"":"🍽"}</span>
       <div>
         <b>${esc(i.name_tr)}</b>
         <div class="meta">${[i.grams?i.grams+" g":"",i.featured&&i.photo_url?'<span class="badge">vitrinde</span>':""].filter(Boolean).join(" · ")}</div>
@@ -411,6 +413,7 @@ async function move(list,item,dir){
 
 /* ---- ürün formu ---- */
 $("alChk").innerHTML=Object.entries(ALLERGENS).map(([k,v])=>`<label><input type="checkbox" name="al" value="${k}">${v.tr}</label>`).join("");
+$("alChk").addEventListener("change",e=>{if(e.target.checked)$("itemForm").elements.alok.checked=true});
 $("themes").innerHTML=Object.entries(THEMES).map(([k,v])=>`<label><input type="radio" name="theme" value="${k}"><span class="d" style="background:${v.bg}"></span>${v.name}</label>`).join("");
 function openSheet(id){$(id).hidden=false;document.body.style.overflow="hidden"}
 function closeSheet(id){$(id).hidden=true;document.body.style.overflow=""}
@@ -422,10 +425,11 @@ function openItem(item){
   editing=item||null; const f=$("itemForm"); f.reset();
   $("itemTitle").textContent=item?"Ürünü düzenle":"Yeni ürün"; $("delItem").hidden=!item;
   $("catSelect").innerHTML=CATS.map(c=>`<option value="${c.id}">${esc(c.name_tr)}</option>`).join("");
-  const d=item||{category_id:curCat,available:true,featured:false,theme:"aub",allergens:[],callouts:[]};
+  const d=item||{category_id:curCat,available:true,featured:false,theme:"aub",allergens:null,callouts:[]};
   for(const k of ["name_tr","name_en","desc_tr","desc_en","ingredients_tr","ingredients_en","price","grams","kcal","price_unit_tr","price_unit_en","category_id"]) f.elements[k].value=d[k]??"";
   f.elements.available.checked=d.available!==false; f.elements.featured.checked=!!d.featured;
   f.querySelectorAll("[name=al]").forEach(c=>c.checked=(d.allergens||[]).includes(c.value));
+  f.elements.alok.checked=Array.isArray(d.allergens);
   (f.querySelector(`[name=theme][value="${d.theme||"aub"}"]`)||f.querySelector("[name=theme]")).checked=true;
   coDraft=JSON.parse(JSON.stringify(d.callouts||[])); photoFile=null; photoUrl=d.photo_url||null;
   renderPhoto(); openSheet("itemSheet");
@@ -455,6 +459,12 @@ $("pv").addEventListener("click",e=>{
 $("file").onchange=e=>{const f=e.target.files[0]; if(!f) return; photoFile=f; coDraft=[]; renderPhoto(); $("itemForm").elements.featured.checked=true; e.target.value=""};
 $("rmPhoto").onclick=()=>{photoFile=null;photoUrl=null;coDraft=[];$("itemForm").elements.featured.checked=false;renderPhoto()};
 
+/* artık kullanılmayan fotoğrafı depodan sil (yalnızca bizim kovadaki dosyalar) */
+const BUCKET="/storage/v1/object/public/dishes/";
+async function dropPhoto(u){const i=(u||"").indexOf(BUCKET); if(i<0) return;
+  if(ITEMS.some(x=>x.photo_url===u)) return;
+  try{await sb.storage.from("dishes").remove([decodeURIComponent(u.slice(i+BUCKET.length))])}catch(e){console.warn(e)}}
+
 /* fotoğrafı küçült, şeffaflığı koru, WebP olarak yükle */
 async function prepImage(file){
   const bmp=await createImageBitmap(file); const max=1400, sc=Math.min(1,max/Math.max(bmp.width,bmp.height));
@@ -472,7 +482,7 @@ $("itemForm").onsubmit=async e=>{
       ingredients_tr:txt(f.elements.ingredients_tr.value), ingredients_en:txt(f.elements.ingredients_en.value),
       price:num(f.elements.price.value), grams:num(f.elements.grams.value), kcal:num(f.elements.kcal.value),
       price_unit_tr:txt(f.elements.price_unit_tr.value), price_unit_en:txt(f.elements.price_unit_en.value),
-      allergens:[...f.querySelectorAll("[name=al]:checked")].map(c=>c.value),
+      allergens:(()=>{const a=[...f.querySelectorAll("[name=al]:checked")].map(c=>c.value);return a.length||f.elements.alok.checked?a:null})(),
       available:f.elements.available.checked, featured:f.elements.featured.checked,
       theme:f.querySelector("[name=theme]:checked")?.value||"aub",
       callouts:coDraft.filter(c=>(c.tr||"").trim()||(c.en||"").trim()).map(c=>({a:c.a,tr:(c.tr||"").trim(),en:(c.en||"").trim()}))
@@ -487,8 +497,9 @@ $("itemForm").onsubmit=async e=>{
     rec.photo_url=photoUrl;
     if(rec.featured&&!rec.photo_url) rec.featured=false;
     if(editing){
+      const old=editing.photo_url;
       const {data,error}=await sb.from("items").update(rec).eq("id",editing.id).select().single(); if(error) throw error;
-      Object.assign(editing,data);
+      Object.assign(editing,data); if(old&&old!==data.photo_url) dropPhoto(old);
     }else{
       rec.sort=Math.max(0,...ITEMS.filter(i=>i.category_id===rec.category_id).map(i=>i.sort||0))+1;
       const {data,error}=await sb.from("items").insert(rec).select().single(); if(error) throw error;
@@ -500,7 +511,7 @@ $("itemForm").onsubmit=async e=>{
 $("delItem").onclick=async()=>{
   if(!editing||!confirm(`“${editing.name_tr}” silinsin mi? Bu geri alınamaz.`)) return;
   const {error}=await sb.from("items").delete().eq("id",editing.id); if(error) return fail(error);
-  ITEMS=ITEMS.filter(i=>i.id!==editing.id); closeSheet("itemSheet"); renderCats(); renderItems(); toast("Silindi");
+  ITEMS=ITEMS.filter(i=>i.id!==editing.id); dropPhoto(editing.photo_url); closeSheet("itemSheet"); renderCats(); renderItems(); toast("Silindi");
 };
 $("addItem").onclick=()=>{if(!CATS.length){toast("Önce bir kategori ekleyin",true);openCats();return}openItem(null)};
 
@@ -521,7 +532,8 @@ function renderCatRows(){
     r.querySelector("[data-del]").onclick=async()=>{const n=ITEMS.filter(i=>i.category_id===c.id).length;
       if(!confirm(n?`“${c.name_tr}” ve içindeki ${n} ürün silinsin mi?`:`“${c.name_tr}” silinsin mi?`)) return;
       const {error}=await sb.from("categories").delete().eq("id",c.id); if(error) return fail(error);
-      CATS=CATS.filter(x=>x.id!==c.id); ITEMS=ITEMS.filter(i=>i.category_id!==c.id); if(curCat===c.id) curCat=CATS[0]?.id||null; renderCatRows(); renderCats(); renderItems(); toast("Silindi")};
+      const gone=ITEMS.filter(i=>i.category_id===c.id).map(i=>i.photo_url);
+      CATS=CATS.filter(x=>x.id!==c.id); ITEMS=ITEMS.filter(i=>i.category_id!==c.id); gone.forEach(dropPhoto); if(curCat===c.id) curCat=CATS[0]?.id||null; renderCatRows(); renderCats(); renderItems(); toast("Silindi")};
     r.querySelectorAll("[data-mv]").forEach(b=>b.onclick=async()=>{const k=CATS.indexOf(c), j=k+Number(b.dataset.mv); if(j<0||j>=CATS.length) return;
       const arr=CATS.slice(); arr.splice(k,1); arr.splice(j,0,c);
       for(const [n,x] of arr.entries()){ if(x.sort!==n+1){const {error}=await sb.from("categories").update({sort:n+1}).eq("id",x.id); if(error) return fail(error); x.sort=n+1} }
@@ -537,6 +549,7 @@ function fillSettings(){for(const k of ["catch_tr","catch_en","notice_tr","notic
 async function saveSet(keys,btn){
   btn.disabled=true; const rec={}; keys.forEach(k=>rec[k]=$(k).value.trim()||null);
   if(rec.whatsapp) rec.whatsapp=rec.whatsapp.replace(/\D/g,"");
+  for(const k of ["review_url","instagram"]) if(rec[k]&&!/^https:\/\//i.test(rec[k])){btn.disabled=false;toast("Bağlantı https:// ile başlamalı",true);$(k).focus();return}
   const {error}=await sb.from("settings").upsert({id:1,...rec}); btn.disabled=false;
   if(error) return fail(error); Object.assign(SET,rec); fillSettings(); toast("Kaydedildi");
 }
