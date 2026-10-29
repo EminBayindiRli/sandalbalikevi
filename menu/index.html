@@ -133,7 +133,47 @@ p{margin:0}
 .rows{margin-top:14px;display:grid;gap:10px}
 @media(min-width:960px){.rows{grid-template-columns:1fr 1fr;gap:12px 24px}}
 .row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:18px;background:#fff;border:1.5px solid rgba(16,42,76,.18);text-align:left;width:100%;cursor:default}
-.row.has{cursor:pointer;border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.row{cursor:pointer;transition:transform .15s var(--ease),box-shadow .15s var(--ease)}
+.row:active{transform:scale(.985)}
+@media(hover:hover){.row:hover{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}}
+.row.has{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+
+/* Ürün detayı penceresi */
+.pop{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;background:rgba(10,24,44,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);animation:popbg .3s ease both}
+.pop.closing{animation:popbg .25s ease reverse both}
+@keyframes popbg{from{opacity:0}}
+.pop-in{position:relative;width:min(920px,100%);max-height:94svh;overflow:auto;overscroll-behavior:contain;background:var(--paper);border-radius:28px 28px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.35);animation:popup .45s var(--ease) both}
+.pop.closing .pop-in{animation:popdown .25s ease-in both}
+@keyframes popup{from{transform:translateY(60%);opacity:.4}}
+@keyframes popdown{to{transform:translateY(70%);opacity:0}}
+@keyframes popzoom{from{transform:translateY(30px) scale(.94);opacity:0}}
+.pop-in::before{content:"";position:absolute;left:50%;top:9px;width:44px;height:5px;margin-left:-22px;border-radius:9px;background:rgba(255,255,255,.55);z-index:6}
+@media(min-width:860px){
+  .pop{align-items:center;padding:24px}
+  .pop-in{display:grid;grid-template-columns:1.05fr 1fr;border-radius:32px;max-height:88vh;animation-name:popzoom}
+  .pop-in::before{display:none}
+}
+.pop-x{position:absolute;right:14px;top:14px;z-index:7;width:42px;height:42px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);font-size:24px;line-height:1;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.pop-stage{--bg:#2F5E4E;--fg:#FFF3E6;--ac:#F2B035;--sun:#3D7462;position:relative;overflow:hidden;display:grid;place-items:center;min-height:clamp(290px,82vw,380px);padding:34px 24px;background:var(--bg);color:var(--fg);perspective:1000px;touch-action:pan-y}
+@media(min-width:860px){.pop-stage{min-height:520px;height:100%}}
+.pop-stage .sun{width:min(80vw,440px)}
+.pop-stage .marq{font-size:clamp(90px,24vw,170px)}
+.pop-stage .tilt{width:min(78%,380px)}
+.pop-media{position:relative;display:grid;place-items:center}
+.pop-media img.cut{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 20px rgba(0,0,0,.4))}
+.pop-media .frame{position:relative;width:86%;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 0 0 7px var(--fg),0 0 0 9px rgba(0,0,0,.12),0 28px 40px -14px rgba(0,0,0,.6);background:#EFE6D6}
+.pop-media .frame img{width:100%;height:100%;object-fit:cover;animation:kb 16s ease-in-out infinite alternate}
+@keyframes kb{0%{transform:scale(1.05) translate(0,0)}50%{transform:scale(1.16) translate(-3%,2%)}100%{transform:scale(1.1) translate(3%,-2%)}}
+.pop-media .frame::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.28),transparent 45%);pointer-events:none}
+.pop-media .ringd{position:absolute;inset:-4%;border-radius:50%;border:2px dashed var(--fg);opacity:.35;animation:spin 40s linear infinite}
+.pop-media svg.plate0{width:70%;stroke:var(--fg);fill:none;stroke-width:1.6;opacity:.9}
+.pop-body{position:relative;padding:22px 22px calc(28px + env(safe-area-inset-bottom))}
+@media(min-width:860px){.pop-body{padding:44px 36px 36px;align-self:center}}
+.pop-name{font:italic 800 clamp(38px,10vw,56px)/.98 var(--serif);letter-spacing:-.02em;margin-top:10px}
+.pop-body .desc{font-size:18px}
+.pop-body .price b{font-size:34px}
+.pop-off{display:inline-block;margin-top:12px;font:800 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--coral);padding:4px 10px;border-radius:999px}
+body.lock{overflow:hidden}
 .row .th{width:52px;height:52px;object-fit:cover;border-radius:12px;background:#EFE6D6}
 .search{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;border-radius:14px;background:#fff;border:1.5px solid rgba(16,42,76,.18)}
 .search:focus-within{border-color:var(--ink)}
@@ -170,7 +210,7 @@ p{margin:0}
 .back a.wa{background:var(--coral)}
 
 @media (prefers-reduced-motion:reduce){
-  .bob,.shadow,.marq,.stamp svg,.sun::after{animation:none}
+  .bob,.shadow,.marq,.stamp svg,.sun::after,.pop-media .frame img,.pop-media .ringd,.pop,.pop-in{animation:none}
   .plate,.tilt,.ln,.lbl{transition:none}
   .on .ring{animation:none;opacity:.6}
 }
@@ -248,6 +288,26 @@ p{margin:0}
 
 <p class="legal" data-t="legal"></p>
 
+<div class="pop" id="pop" hidden role="dialog" aria-modal="true" aria-labelledby="popName">
+  <div class="pop-in" id="popIn">
+    <button class="pop-x" id="popX" type="button">×</button>
+    <div class="pop-stage" id="popStage">
+      <div class="sun" aria-hidden="true"></div>
+      <div class="marq" id="popMarq" aria-hidden="true"></div>
+      <div class="tilt" id="popTilt"><div class="bob"><div class="shadow"></div><div class="pop-media" id="popMedia"></div></div></div>
+    </div>
+    <div class="pop-body">
+      <div class="count" id="popCat"></div>
+      <h2 class="pop-name" id="popName"></h2>
+      <div class="en" id="popSub"></div>
+      <div class="chips" id="popChips"></div>
+      <p class="desc" id="popDesc"></p>
+      <div class="ing" id="popIng"></div>
+      <div class="price"><span data-t="priceLbl"></span><i></i><b id="popPrice"></b></div>
+    </div>
+  </div>
+</div>
+
 <nav class="back" aria-label="Hızlı geçiş">
   <a href="/qr/" data-t="toHub"></a>
   <a href="/" data-t="toSite"></a>
@@ -262,11 +322,11 @@ const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const T = {
   tr:{menuTitle:"Menü", loading:"menü hazırlanıyor…", priceLbl:"Fiyat · KDV dahil", allItems:"tümü", catchK:"denizden bugün", catchT:"Günün balıkları", catchP:"Balıklarımız ve fiyatları denize göre her gün değişir. WhatsApp'tan sorun, sizin için ayıralım.", catchBtn:"Bugün ne var?", toHub:"Ana sayfa", toSite:"Sandal'ı tanıyın", toRes:"Rezervasyon",
       legal:"Fiyatlara KDV dahildir; servis veya kuver ücreti alınmaz. Gramaj ve kalori değerleri yaklaşıktır. Alerjen bilgisi için lütfen servis ekibimize de danışın. Fiyat listemiz girişte ve masalarda da yer alır.",
-      soon:"Bu kategori yakında eklenecek.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Afiyet olsun · ", noAll:"Alerjen içermez", ask:"Sorunuz", search:"Menüde ara…", found:"Arama sonuçları", none:"Sonuç bulunamadı.", kcal:"kcal", g:"g", ingT:"İçinde", prev:"Önceki", next:"Sonraki", off:"bugün yok", unit:"",
+      soon:"Bu kategori yakında eklenecek.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Afiyet olsun · ", noAll:"Alerjen içermez", close:"Kapat", ask:"Sorunuz", search:"Menüde ara…", found:"Arama sonuçları", none:"Sonuç bulunamadı.", kcal:"kcal", g:"g", ingT:"İçinde", prev:"Önceki", next:"Sonraki", off:"bugün yok", unit:"",
       wa:"Merhaba, rezervasyon yapmak istiyorum.", waCatch:"Merhaba, bugün hangi balıklar var?"},
   en:{menuTitle:"Menu", loading:"preparing the menu…", priceLbl:"Price · VAT incl.", allItems:"all", catchK:"fresh off the boat", catchT:"Today's catch", catchP:"Our fish and prices change daily with the sea. Ask us on WhatsApp and we'll set one aside for you.", catchBtn:"What's in today?", toHub:"Home", toSite:"About Sandal", toRes:"Book a table",
       legal:"Prices include VAT; no service or cover charge. Portion and calorie values are approximate. Please also ask our staff about allergens. Our price list is displayed at the entrance and on every table.",
-      soon:"This category is coming soon.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Enjoy your meal · ", noAll:"No major allergens", ask:"Ask us", search:"Search the menu…", found:"Search results", none:"No results.", kcal:"kcal", g:"g", ingT:"Inside", prev:"Previous", next:"Next", off:"not today", unit:"",
+      soon:"This category is coming soon.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Enjoy your meal · ", noAll:"No major allergens", close:"Close", ask:"Ask us", search:"Search the menu…", found:"Search results", none:"No results.", kcal:"kcal", g:"g", ingT:"Inside", prev:"Previous", next:"Next", off:"not today", unit:"",
       wa:"Hello, I'd like to make a reservation.", waCatch:"Hello, which fish do you have today?"}
 };
 const {ALLERGENS,THEMES,waLink}=window.SANDAL;
@@ -293,6 +353,7 @@ function applyLang(){
   const ct=lang==="en"&&S.catch_en?S.catch_en:S.catch_tr; $("catchToday").hidden=!ct; $("catchToday").textContent=ct||"";
   const nt=lang==="en"&&S.notice_en?S.notice_en:S.notice_tr; $("notice").hidden=!nt; $("noticeTxt").textContent=nt||"";
   buildCats(); render(false);
+  if(popItem) fillPop(popItem);
 }
 function buildCats(){
   const c=$("cats"); c.innerHTML="";
@@ -323,12 +384,12 @@ function render(anim){
     const al=(i.allergens||[]).map(a=>ALLERGENS[a]?`<span>${ALLERGENS[a][lang]}</span>`:"").join("");
     const meta=[i.grams?`${i.grams} ${t("g")}`:"", i.kcal?`≈ ${i.kcal} ${t("kcal")}`:""].filter(Boolean).join(" · ");
     const unit=L(i,"price_unit"); const sub=lang==="tr"?(i.name_en||""):(i.name_tr||"");
-    return `<${has?"button":"div"} class="row${has?" has":""}${off?" off":""}" ${has?`type="button" data-id="${esc(i.id)}"`:""}>
+    return `<button type="button" class="row${has?" has":""}${off?" off":""}" data-id="${esc(i.id)}">
       ${i.photo_url?`<img class="th" src="${esc(i.photo_url)}" alt="" loading="lazy">`:`<span class="th none"></span>`}
       <span><b>${esc(L(i,"name"))}</b>${sub&&sub!==L(i,"name")?`<small>${esc(sub)}</small>`:""}${Q?`<small class="cat">${esc(catName(i.category_id))}</small>`:""}${meta?`<small>${meta}</small>`:""}${al?`<span class="al">${al}</span>`:""}${off?`<span class="tag">${t("off")}</span>`:""}</span>
       <span class="pr">${fmtPrice(i.price)}${unit?`<small> / ${esc(unit)}</small>`:""}</span>
-    </${has?"button":"div"}>`}).join("");
-  rows.querySelectorAll(".row.has").forEach(r=>r.onclick=()=>{const k=SHOW.findIndex(x=>String(x.id)===r.dataset.id); if(k>=0){stage.scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); go(k)}});
+    </button>`}).join("");
+  rows.querySelectorAll(".row").forEach(r=>r.onclick=()=>openPop(DATA.items.find(x=>String(x.id)===r.dataset.id),r));
 }
 function theme(){
   const it=SHOW[cur], th=THEMES[it.theme]||THEMES.aub; for(const k of ["bg","fg","ac","sun"]) stage.style.setProperty("--"+k,th[k]);
@@ -345,16 +406,20 @@ function renderInfo(anim=true){
   $("name").textContent=L(d,"name");
   const sub=lang==="tr"?d.name_en:d.name_tr; $("sub").textContent=sub&&sub!==L(d,"name")?sub:"";
   $("desc").textContent=L(d,"desc");
-  const ing=L(d,"ingredients"); $("ing").innerHTML=ing?`<b>${t("ingT")}</b>`+ing.split(/\s*,\s*/).map(x=>`<span>${esc(x)}</span>`).join(""):"";
-  const unit=L(d,"price_unit"); $("price").innerHTML=esc(fmtPrice(d.price))+(unit?`<small> / ${esc(unit)}</small>`:"");
+  $("ing").innerHTML=ingHTML(d);
+  $("price").innerHTML=priceHTML(d);
+  $("chips").innerHTML=chipsHTML(d);
+  if(anim){const info=$("info");info.classList.remove("fade");void info.offsetWidth;info.classList.add("fade")}
+  document.querySelectorAll("#dots button").forEach((b,i)=>b.setAttribute("aria-current",i===cur));
+}
+function ingHTML(d){const ing=L(d,"ingredients"); return ing?`<b>${t("ingT")}</b>`+ing.split(/\s*,\s*/).map(x=>`<span>${esc(x)}</span>`).join(""):""}
+function priceHTML(d){const unit=L(d,"price_unit"); return esc(fmtPrice(d.price))+(unit?`<small> / ${esc(unit)}</small>`:"")}
+function chipsHTML(d){
   const al=Array.isArray(d.allergens)?d.allergens:null;
-  $("chips").innerHTML=
-    (d.grams?`<span class="chip g"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1.5 11h-9z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>${d.grams} ${t("g")}</span>`:"")+
+  return (d.grams?`<span class="chip g"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1.5 11h-9z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>${d.grams} ${t("g")}</span>`:"")+
     (d.kcal?`<span class="chip k"><svg viewBox="0 0 24 24"><path d="M12 3c3 4 5 6.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-5 .5 2 1.5 3 3 3-1-3 0-6 0-8Z"/></svg>≈ ${d.kcal} ${t("kcal")}</span>`:"")+
     (!al?"":al.length?al.map(a=>ALLERGENS[a]?`<span class="chip al">⚠ ${ALLERGENS[a][lang]}</span>`:"").join("")
       :`<span class="chip ok"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>${t("noAll")}</span>`);
-  if(anim){const info=$("info");info.classList.remove("fade");void info.offsetWidth;info.classList.add("fade")}
-  document.querySelectorAll("#dots button").forEach((b,i)=>b.setAttribute("aria-current",i===cur));
 }
 
 /* Etiket konumları: kayıtta yoksa otomatik (üsttekiler yukarı, alttakiler aşağı) */
@@ -404,6 +469,58 @@ function drawCallouts(animate=true){
   });
 }
 
+/* ---- Ürün detayı penceresi ---- */
+const pop=$("pop"), popStage=$("popStage"), popTilt=$("popTilt");
+let popItem=null, popFrom=null, popRaf=0;
+const PLATE='<svg class="plate0" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><circle cx="60" cy="60" r="40" stroke-dasharray="3 6"/><path d="M34 60c8-10 18-15 28-15 9 0 15 5 20 15-5 10-11 15-20 15-10 0-20-5-28-15Z"/><path d="M34 60l-7-6M34 60l-7 6"/><circle cx="70" cy="56" r="1.8"/></svg>';
+function fillPop(d){
+  const th=THEMES[d.theme]||THEMES.sea; for(const k of ["bg","fg","ac","sun"]) popStage.style.setProperty("--"+k,th[k]);
+  const name=L(d,"name"), sub=lang==="tr"?d.name_en:d.name_tr;
+  $("popMarq").textContent=(name+" · ").repeat(6);
+  $("popCat").textContent=L(DATA.categories.find(c=>c.id===d.category_id)||{},"name");
+  $("popName").textContent=name; $("popSub").textContent=sub&&sub!==name?sub:"";
+  $("popChips").innerHTML=chipsHTML(d)+(d.available===false?`<span class="pop-off">${t("off")}</span>`:"");
+  $("popDesc").textContent=L(d,"desc"); $("popDesc").hidden=!L(d,"desc");
+  $("popIng").innerHTML=ingHTML(d); $("popPrice").innerHTML=priceHTML(d);
+  $("popX").setAttribute("aria-label",t("close"));
+  const m=$("popMedia");
+  if(!d.photo_url) m.innerHTML=PLATE;
+  else if(d.featured) m.innerHTML=`<img class="cut" src="${esc(d.photo_url)}" alt="${esc(name)}">`;   /* şeffaf vitrin fotoğrafı: tabak süzülür */
+  else m.innerHTML=`<span class="ringd" aria-hidden="true"></span><div class="frame"><img src="${esc(d.photo_url)}" alt="${esc(name)}"></div>`;
+}
+function openPop(d,from){
+  if(!d) return; popItem=d; popFrom=from||null; fillPop(d);
+  pop.classList.remove("closing"); pop.hidden=false; document.body.classList.add("lock"); $("popIn").scrollTop=0;
+  if(!history.state||!history.state.pop) history.pushState({pop:1},"");
+  $("popX").focus({preventScroll:true});
+  if(!RM){cancelAnimationFrame(popRaf); const t0=performance.now();
+    const sway=now=>{ if(pop.hidden) return; if(!matchMedia("(hover:hover)").matches){const s=(now-t0)/1000;
+      popTilt.style.setProperty("--ry",`${Math.sin(s*.7)*8}deg`); popTilt.style.setProperty("--rx",`${10+Math.sin(s*.5)*4}deg`)}
+      popRaf=requestAnimationFrame(sway)}; popRaf=requestAnimationFrame(sway)}
+}
+function hidePop(){
+  if(pop.hidden) return; cancelAnimationFrame(popRaf);
+  const done=()=>{pop.hidden=true; pop.classList.remove("closing"); document.body.classList.remove("lock"); popItem=null; if(popFrom) popFrom.focus({preventScroll:true})};
+  if(RM) return done(); pop.classList.add("closing"); setTimeout(done,240);
+}
+function closePop(){ history.state&&history.state.pop ? history.back() : hidePop() }  /* telefonda geri tuşu da kapatsın */
+addEventListener("popstate",hidePop);
+$("popX").onclick=closePop;
+pop.addEventListener("click",e=>{if(e.target===pop)closePop()});
+addEventListener("keydown",e=>{if(!pop.hidden&&e.key==="Escape")closePop()});
+pop.addEventListener("keydown",e=>{ if(e.key!=="Tab") return;   /* odak pencere içinde kalsın */
+  const f=[...pop.querySelectorAll("button,a[href]")]; if(!f.length) return;
+  if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus()}
+  else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus()} });
+if(!RM){
+  popStage.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const r=popStage.getBoundingClientRect();
+    popTilt.style.setProperty("--ry",`${((e.clientX-r.left)/r.width-.5)*18}deg`);popTilt.style.setProperty("--rx",`${10-((e.clientY-r.top)/r.height-.5)*14}deg`)});
+  popStage.addEventListener("pointerleave",()=>{popTilt.style.setProperty("--ry","0deg");popTilt.style.setProperty("--rx","10deg")});
+}
+/* aşağı kaydırarak kapat (telefon) */
+let py=null; $("popIn").addEventListener("touchstart",e=>{py=$("popIn").scrollTop<=0?e.touches[0].clientY:null},{passive:true});
+$("popIn").addEventListener("touchend",e=>{if(py!==null&&e.changedTouches[0].clientY-py>90)closePop();py=null},{passive:true});
+
 let busy=false;
 function go(i,dir){
   if(busy||i===cur||!SHOW[i]) return; busy=true;
@@ -420,8 +537,9 @@ function go(i,dir){
   },RM?0:420);
 }
 $("prev").onclick=()=>go((cur-1+SHOW.length)%SHOW.length,-1);
+plate.addEventListener("click",()=>{if(SHOW[cur])openPop(SHOW[cur],null)}); plate.style.cursor="zoom-in";
 $("next").onclick=()=>go((cur+1)%SHOW.length,1);
-addEventListener("keydown",e=>{if(!SHOW.length||e.target.closest("input"))return;if(e.key==="ArrowRight")$("next").click();if(e.key==="ArrowLeft")$("prev").click()});
+addEventListener("keydown",e=>{if(!SHOW.length||!pop.hidden||e.target.closest("input"))return;if(e.key==="ArrowRight")$("next").click();if(e.key==="ArrowLeft")$("prev").click()});
 
 let sx=null,sy=null;
 stage.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
