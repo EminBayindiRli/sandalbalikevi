@@ -180,6 +180,11 @@ body.lock{overflow:hidden}
 .search svg{width:18px;height:18px;flex:none;stroke:var(--ink2);fill:none;stroke-width:2}
 .search input{flex:1;min-width:0;border:0;outline:0;background:none;font:500 16px var(--sans);color:var(--ink)}
 .row small.cat{color:var(--coral);font-weight:700}
+.row small.vr{color:var(--ink);font-weight:700}
+/* porsiyon seçenekleri */
+.vars{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.vars button{border:1.5px solid var(--ink);background:#fff;border-radius:999px;padding:7px 15px;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s var(--ease)}
+.vars button[aria-pressed=true]{background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--coral)}
 .row .th.none{width:0}
 .row b{display:block;font:italic 700 20px/1.1 var(--serif)}
 .row small{display:block;font-size:13px;color:var(--ink2);margin-top:3px}
@@ -263,6 +268,7 @@ body.lock{overflow:hidden}
       <div class="chips" id="chips"></div>
       <p class="desc" id="desc"></p>
       <div class="ing" id="ing"></div>
+      <div class="vars" id="vars" role="group" hidden></div>
       <div class="price"><span data-t="priceLbl"></span><i></i><b id="price">—</b></div>
     </section>
   </div>
@@ -303,6 +309,7 @@ body.lock{overflow:hidden}
       <div class="chips" id="popChips"></div>
       <p class="desc" id="popDesc"></p>
       <div class="ing" id="popIng"></div>
+      <div class="vars" id="popVars" role="group" hidden></div>
       <div class="price"><span data-t="priceLbl"></span><i></i><b id="popPrice"></b></div>
     </div>
   </div>
@@ -322,11 +329,11 @@ const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const T = {
   tr:{menuTitle:"Menü", loading:"menü hazırlanıyor…", priceLbl:"Fiyat · KDV dahil", allItems:"tümü", catchK:"denizden bugün", catchT:"Günün balıkları", catchP:"Balıklarımız ve fiyatları denize göre her gün değişir. WhatsApp'tan sorun, sizin için ayıralım.", catchBtn:"Bugün ne var?", toHub:"Ana sayfa", toSite:"Sandal'ı tanıyın", toRes:"Rezervasyon",
       legal:"Fiyatlara KDV dahildir; servis veya kuver ücreti alınmaz. Gramaj ve kalori değerleri yaklaşıktır. Alerjen bilgisi için lütfen servis ekibimize de danışın. Fiyat listemiz girişte ve masalarda da yer alır.",
-      soon:"Bu kategori yakında eklenecek.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Afiyet olsun · ", noAll:"Alerjen içermez", close:"Kapat", ask:"Sorunuz", search:"Menüde ara…", found:"Arama sonuçları", none:"Sonuç bulunamadı.", kcal:"kcal", g:"g", ingT:"İçinde", prev:"Önceki", next:"Sonraki", off:"bugün yok", unit:"",
+      soon:"Bu kategori yakında eklenecek.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Afiyet olsun · ", noAll:"Alerjen içermez", close:"Kapat", portion:"Porsiyon", ask:"Sorunuz", search:"Menüde ara…", found:"Arama sonuçları", none:"Sonuç bulunamadı.", kcal:"kcal", g:"g", ingT:"İçinde", prev:"Önceki", next:"Sonraki", off:"bugün yok", unit:"",
       wa:"Merhaba, rezervasyon yapmak istiyorum.", waCatch:"Merhaba, bugün hangi balıklar var?"},
   en:{menuTitle:"Menu", loading:"preparing the menu…", priceLbl:"Price · VAT incl.", allItems:"all", catchK:"fresh off the boat", catchT:"Today's catch", catchP:"Our fish and prices change daily with the sea. Ask us on WhatsApp and we'll set one aside for you.", catchBtn:"What's in today?", toHub:"Home", toSite:"About Sandal", toRes:"Book a table",
       legal:"Prices include VAT; no service or cover charge. Portion and calorie values are approximate. Please also ask our staff about allergens. Our price list is displayed at the entrance and on every table.",
-      soon:"This category is coming soon.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Enjoy your meal · ", noAll:"No major allergens", close:"Close", ask:"Ask us", search:"Search the menu…", found:"Search results", none:"No results.", kcal:"kcal", g:"g", ingT:"Inside", prev:"Previous", next:"Next", off:"not today", unit:"",
+      soon:"This category is coming soon.", count:(c,i,n)=>`${c} · ${i}/${n}`, stamp:"Sandal · Güzelbahçe · Enjoy your meal · ", noAll:"No major allergens", close:"Close", portion:"Portion", ask:"Ask us", search:"Search the menu…", found:"Search results", none:"No results.", kcal:"kcal", g:"g", ingT:"Inside", prev:"Previous", next:"Next", off:"not today", unit:"",
       wa:"Hello, I'd like to make a reservation.", waCatch:"Hello, which fish do you have today?"}
 };
 const {ALLERGENS,THEMES,waLink}=window.SANDAL;
@@ -386,8 +393,8 @@ function render(anim){
     const unit=L(i,"price_unit"); const sub=lang==="tr"?(i.name_en||""):(i.name_tr||"");
     return `<button type="button" class="row${has?" has":""}${off?" off":""}" data-id="${esc(i.id)}">
       ${i.photo_url?`<img class="th" src="${esc(i.photo_url)}" alt="" loading="lazy">`:`<span class="th none"></span>`}
-      <span><b>${esc(L(i,"name"))}</b>${sub&&sub!==L(i,"name")?`<small>${esc(sub)}</small>`:""}${Q?`<small class="cat">${esc(catName(i.category_id))}</small>`:""}${meta?`<small>${meta}</small>`:""}${al?`<span class="al">${al}</span>`:""}${off?`<span class="tag">${t("off")}</span>`:""}</span>
-      <span class="pr">${fmtPrice(i.price)}${unit?`<small> / ${esc(unit)}</small>`:""}</span>
+      <span><b>${esc(L(i,"name"))}</b>${sub&&sub!==L(i,"name")?`<small>${esc(sub)}</small>`:""}${Q?`<small class="cat">${esc(catName(i.category_id))}</small>`:""}${meta?`<small>${meta}</small>`:""}${opts(i).length?`<small class="vr">${opts(i).map(v=>`${esc(vName(v))} ${esc(fmtPrice(v.price))}`).join(" · ")}</small>`:""}${al?`<span class="al">${al}</span>`:""}${off?`<span class="tag">${t("off")}</span>`:""}</span>
+      <span class="pr">${opts(i).length?"":fmtPrice(i.price)+(unit?`<small> / ${esc(unit)}</small>`:"")}</span>
     </button>`}).join("");
   rows.querySelectorAll(".row").forEach(r=>r.onclick=()=>openPop(DATA.items.find(x=>String(x.id)===r.dataset.id),r));
 }
@@ -407,12 +414,24 @@ function renderInfo(anim=true){
   const sub=lang==="tr"?d.name_en:d.name_tr; $("sub").textContent=sub&&sub!==L(d,"name")?sub:"";
   $("desc").textContent=L(d,"desc");
   $("ing").innerHTML=ingHTML(d);
-  $("price").innerHTML=priceHTML(d);
+  showVars($("vars"),$("price"),d);
   $("chips").innerHTML=chipsHTML(d);
   if(anim){const info=$("info");info.classList.remove("fade");void info.offsetWidth;info.classList.add("fade")}
   document.querySelectorAll("#dots button").forEach((b,i)=>b.setAttribute("aria-current",i===cur));
 }
 function ingHTML(d){const ing=L(d,"ingredients"); return ing?`<b>${t("ingT")}</b>`+ing.split(/\s*,\s*/).map(x=>`<span>${esc(x)}</span>`).join(""):""}
+/* Porsiyon seçenekleri: [{tr,en,price}] — boşsa ürün tek fiyatlıdır */
+const opts=d=>Array.isArray(d.variants)?d.variants.filter(v=>v&&(v.tr||v.en)):[];
+const vName=v=>(lang==="en"&&v.en)?v.en:(v.tr||v.en);
+function showVars(box,priceEl,d){
+  const o=opts(d); box.hidden=!o.length;
+  if(!o.length){box.innerHTML="";priceEl.innerHTML=priceHTML(d);return}
+  box.setAttribute("aria-label",t("portion"));
+  box.innerHTML=o.map((v,i)=>`<button type="button" data-i="${i}">${esc(vName(v))}</button>`).join("");
+  const pick=i=>{box.querySelectorAll("button").forEach((b,j)=>b.setAttribute("aria-pressed",j===i)); priceEl.innerHTML=esc(fmtPrice(o[i].price))};
+  box.querySelectorAll("button").forEach(b=>b.onclick=e=>{e.stopPropagation();pick(+b.dataset.i)});
+  pick(0);
+}
 function priceHTML(d){const unit=L(d,"price_unit"); return esc(fmtPrice(d.price))+(unit?`<small> / ${esc(unit)}</small>`:"")}
 function chipsHTML(d){
   const al=Array.isArray(d.allergens)?d.allergens:null;
@@ -481,7 +500,7 @@ function fillPop(d){
   $("popName").textContent=name; $("popSub").textContent=sub&&sub!==name?sub:"";
   $("popChips").innerHTML=chipsHTML(d)+(d.available===false?`<span class="pop-off">${t("off")}</span>`:"");
   $("popDesc").textContent=L(d,"desc"); $("popDesc").hidden=!L(d,"desc");
-  $("popIng").innerHTML=ingHTML(d); $("popPrice").innerHTML=priceHTML(d);
+  $("popIng").innerHTML=ingHTML(d); showVars($("popVars"),$("popPrice"),d);
   $("popX").setAttribute("aria-label",t("close"));
   const m=$("popMedia");
   if(!d.photo_url) m.innerHTML=PLATE;

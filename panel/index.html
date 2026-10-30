@@ -123,6 +123,11 @@ legend{font-weight:900;font-size:15px;margin-bottom:6px}
 .co b{width:26px;height:26px;border-radius:50%;background:var(--saffron);display:grid;place-items:center;font-size:12px}
 .co input{padding:9px 10px}
 .co button{width:36px;height:40px;border-radius:10px;border:1.5px solid var(--line);background:#fff;cursor:pointer}
+.vr{display:grid;grid-template-columns:1fr 1fr 96px 36px;gap:6px;align-items:center;margin-top:6px}
+.vr input{padding:9px 10px}
+.vr button{width:36px;height:40px;border-radius:10px;border:1.5px solid var(--line);background:#fff;cursor:pointer}
+.vrbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.it .vcount{font-size:13px;font-weight:800;color:var(--ink2)}
 .actions{display:flex;gap:10px;margin-top:22px}
 .actions .btn{flex:1}
 
@@ -251,6 +256,15 @@ legend{font-weight:900;font-size:15px;margin-bottom:6px}
         <label class="f"><span>Fiyat birimi (TR) · boşsa porsiyon</span><input type="text" name="price_unit_tr" placeholder="kg"></label>
         <label class="f"><span>Fiyat birimi (EN)</span><input type="text" name="price_unit_en" placeholder="kg"></label>
       </div>
+      <fieldset><legend>Porsiyon seçenekleri</legend>
+        <p class="muted" style="margin:0 0 4px">Örn. meze “Normal / Az”, salata “Tek / Duble / Üçlü / Dörtlü”. Seçenek eklenirse menüde her biri kendi fiyatıyla görünür ve üstteki tek fiyatın yerine geçer. Menüde ilk sıradaki seçenek önce gösterilir.</p>
+        <div id="vrList"></div>
+        <div class="vrbtns">
+          <button type="button" class="btn ghost sm" id="vrAdd">+ Seçenek ekle</button>
+          <button type="button" class="btn ghost sm" data-preset="az">Normal / Az</button>
+          <button type="button" class="btn ghost sm" data-preset="adet">Tek / Duble / Üçlü / Dörtlü</button>
+        </div>
+      </fieldset>
       <label class="f"><span>Açıklama (Türkçe)</span><textarea name="desc_tr"></textarea></label>
       <label class="f"><span>Açıklama (İngilizce)</span><textarea name="desc_en"></textarea></label>
       <label class="f"><span>İçindekiler (Türkçe, virgülle)</span><input type="text" name="ingredients_tr"></label>
@@ -381,7 +395,7 @@ function renderItems(){
         <b>${esc(i.name_tr)}</b>
         <div class="meta">${[i.grams?i.grams+" g":"",i.featured&&i.photo_url?'<span class="badge">vitrinde</span>':""].filter(Boolean).join(" · ")}</div>
         <div class="ctr">
-          <span class="pr"><input type="number" inputmode="decimal" min="0" step="0.01" value="${i.price??""}" placeholder="Fiyat" aria-label="Fiyat"><span>₺</span></span>
+          ${(i.variants||[]).length?`<span class="vcount">${i.variants.length} porsiyon seçeneği</span>`:`<span class="pr"><input type="number" inputmode="decimal" min="0" step="0.01" value="${i.price??""}" placeholder="Fiyat" aria-label="Fiyat"><span>₺</span></span>`}
           <label class="sw"><input type="checkbox" ${i.available?"checked":""} aria-label="Bugün var"><i></i>${i.available?"Var":"Yok"}</label>
         </div>
       </div>
@@ -395,7 +409,7 @@ function renderItems(){
     const pr=row.querySelector(".pr input");
     const savePrice=async()=>{const v=pr.value===""?null:Number(pr.value); if(v===item.price||(v===null&&item.price==null))return;
       const {error}=await sb.from("items").update({price:v}).eq("id",id); if(error) return fail(error); item.price=v; toast("Fiyat kaydedildi")};
-    pr.onchange=savePrice; pr.onkeydown=e=>{if(e.key==="Enter")pr.blur()};
+    if(pr){pr.onchange=savePrice; pr.onkeydown=e=>{if(e.key==="Enter")pr.blur()}}
     const sw=row.querySelector(".sw input");
     sw.onchange=async()=>{const {error}=await sb.from("items").update({available:sw.checked}).eq("id",id);
       if(error){sw.checked=!sw.checked;return fail(error)} item.available=sw.checked; renderItems(); toast(sw.checked?"Menüde gösteriliyor":"“Bugün yok” olarak işaretlendi")};
@@ -432,8 +446,25 @@ function openItem(item){
   f.elements.alok.checked=Array.isArray(d.allergens);
   (f.querySelector(`[name=theme][value="${d.theme||"aub"}"]`)||f.querySelector("[name=theme]")).checked=true;
   coDraft=JSON.parse(JSON.stringify(d.callouts||[])); photoFile=null; photoUrl=d.photo_url||null;
+  vrDraft=JSON.parse(JSON.stringify(d.variants||[])); renderVr();
   renderPhoto(); openSheet("itemSheet");
 }
+/* ---- porsiyon seçenekleri ---- */
+let vrDraft=[];
+const PRESETS={az:[["Normal","Regular"],["Az","Small"]], adet:[["Tek","Single"],["Duble","Double"],["Üçlü","Triple"],["Dörtlü","Quadruple"]]};
+function renderVr(){
+  $("vrList").innerHTML=vrDraft.map((v,i)=>`<div class="vr"><input type="text" data-i="${i}" data-k="tr" value="${esc(v.tr||"")}" placeholder="Ad (TR)" aria-label="Seçenek adı"><input type="text" data-i="${i}" data-k="en" value="${esc(v.en||"")}" placeholder="English" aria-label="İngilizce adı"><input type="number" inputmode="decimal" min="0" step="0.01" data-i="${i}" data-k="price" value="${v.price??""}" placeholder="₺" aria-label="Fiyat"><button type="button" data-rm="${i}" aria-label="Seçeneği sil">✕</button></div>`).join("");
+  $("vrList").querySelectorAll("input").forEach(inp=>inp.oninput=()=>{vrDraft[inp.dataset.i][inp.dataset.k]=inp.value});
+  $("vrList").querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{vrDraft.splice(Number(b.dataset.rm),1);renderVr()});
+}
+$("vrAdd").onclick=()=>{vrDraft.push({tr:"",en:"",price:""});renderVr();const a=$("vrList").querySelectorAll('input[data-k="tr"]');a[a.length-1].focus()};
+document.querySelectorAll("[data-preset]").forEach(b=>b.onclick=()=>{
+  if(vrDraft.length&&!confirm("Mevcut seçenekler bu şablonla değiştirilsin mi?")) return;
+  const base=$("itemForm").elements.price.value;   /* mevcut fiyat "Normal"/"Tek" seçeneğine yazılır */
+  vrDraft=PRESETS[b.dataset.preset].map(([tr,en])=>({tr,en,price:(tr==="Normal"||tr==="Tek")?base:""}));
+  renderVr(); $("vrList").querySelector('input[data-k="price"][value=""]')?.focus();
+});
+
 function themeNow(){const v=$("itemForm").querySelector("[name=theme]:checked")?.value||"aub";return THEMES[v]}
 function renderPhoto(){
   const src=photoFile?URL.createObjectURL(photoFile):photoUrl;
@@ -495,6 +526,9 @@ $("itemForm").onsubmit=async e=>{
       photoUrl=sb.storage.from("dishes").getPublicUrl(path).data.publicUrl;
     }
     rec.photo_url=photoUrl;
+    const vars=vrDraft.map(v=>({tr:String(v.tr||"").trim(),en:String(v.en||"").trim(),price:v.price===""||v.price==null?null:Number(v.price)})).filter(v=>v.tr);
+    if(vars.length){rec.variants=vars; rec.price=vars[0].price}           /* ilk seçenek ürünün ana fiyatı */
+    else if(editing&&(editing.variants||[]).length) rec.variants=[];
     if(rec.featured&&!rec.photo_url) rec.featured=false;
     if(editing){
       const old=editing.photo_url;
